@@ -1,0 +1,3 @@
+# Login
+az login
+az account list
