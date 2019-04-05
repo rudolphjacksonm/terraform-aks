@@ -1,0 +1,28 @@
+#!/bin/bash
+### Log in to Azure
+#az login
+#az account list
+
+### Initial setup
+# Create resource group
+az group create --name jmaksjenkinsuk --location "UK South"
+
+# Create azure container registry
+# Check if it exists first before creating
+registry_name="jm030a6dde7628c636"
+check=$(az acr check-name -n "${registry_name}" --query nameAvailable)
+if [[ $check == 'true' ]]; then
+  echo "Creating ACR ${registry_name}"
+  az acr create --resource-group jmaksjenkinsuk --name "${registry_name}" --sku Basic
+else
+  echo "ACR ${registry_name} already exists, continuing with setup..."
+fi
+
+### Log in to ACR
+sleep 10
+az acr login --name "${registry_name}"
+
+### Create custom Jenkins image
+image="${registry_name}.azurecr.io/aks-jenkins:1.0"
+docker build -t "${image}" .
+docker push "${image}"
