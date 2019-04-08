@@ -3,6 +3,10 @@ variable "name_prefix" {
   default = "aks-jm"
 }
 
+variable "kube_directory" {
+  default = "/Users/jackmo@kainos.com/.kube"
+}
+
 # Set default location
 variable "location" {
   default = "UK South"

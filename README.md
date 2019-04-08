@@ -16,11 +16,15 @@ Why are we using a hodge-podge of Azure CLI and Terraform? Why not just go full 
 ## Provisioning
 ### 1. Log into the Azure CLI and create a Container Registry -- Azure CLI
 Log in to the Azure CLI. This can be done by running `setup.azcli` using bash, zsh, or any shell of your choosing. It can also be run from within VSCode. If you want, you can also copy and paste the commands into the terminal of your choosing.
-### 2. Create a Service Principal for use with your AKS Cluster -- Azure CLI + Terraform
-This can be done a variety of ways. I found an example of using the AzureRM provider to create the service principal before making the cluster, so it's pure Terraform after doing the container registry creation. If you want to see how it works with the AzureCLI uncomment the service principal section.
-### 3. Create a custom Jenkins Docker image -- Docker + ACR
+### 2. Create a custom Jenkins Docker image -- Docker + ACR
+Note: this is done automatically when you run `setup.azcli`.
+
 We need to create a custom Jenkins image that has the Kubernetes plugin pre-installed. Within in this repository is a `Dockerfile` that contains the necessary config to build the Jenkins image. We want to push this up to our Azure Container Registry.
+### 3. Create a Service Principal for use with your AKS Cluster --Terraform
+This can be done a variety of ways. I found an example of using the AzureRM provider to create the service principal before making the cluster, so it's pure Terraform after doing the container registry creation. If you want to see how it works with the AzureCLI uncomment the service principal section.
 ### 4. Create your cluster -- Terraform
-Within this repository, run `terraform init` to ensure you have the AzureRM module installed locally. Then Run `terraform apply` to create your AKS cluster.
-### 5. Deploy your services -- Helm/Terraform/Ansible, whichever really!
-This part needs to be fleshed out. Helm would be my tool of choice, however Terraform also supports interacting with Kubernetes clusters.
+Change into the `terraform/create-cluster` directory and run `terraform init` to ensure you have the AzureRM module installed locally. Then run `terraform apply` to create your AKS cluster.
+### 5. Deploy your services -- Terraform
+1. Run `terraform output kube_config > ~/.kube/azurek8s`
+2. Run `export KUBECONFIG=~/.kube/azurek8s` before running this or you will not be able to connect to your cluster using Terraform.
+3. Change into the `terraform/jenkins-deployment` directory and run `terraform init` to ensure you have the Kubernetes module installed locally. Then run `terraform apply` to deploy Jenkins along with the necessary k8s service and RBAC role binding.
