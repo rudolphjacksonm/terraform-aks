@@ -26,3 +26,8 @@ az acr login --name "${registry_name}"
 image="${registry_name}.azurecr.io/aks-jenkins:1.0"
 docker build -t "${image}" .
 docker push "${image}"
+
+### Create Application and Service Principal for AKS
+# Currently Terraform doesn't support creating Service Principals, nor does the data
+# source give you the info you need to pass it to AKS
+service_principal=$(az ad sp create-for-rbac -n "aksjenkins" --skip-assignment)

@@ -1,12 +1,13 @@
-resource "azurerm_resource_group" "rg1" {
-  name     = "aksRG1"
-  location = "${var.location}"
+# Query resource group
+data "azurerm_resource_group" "aks_rg" {
+  name = "jmaksjenkinsuk"
 }
 
+# Create AKS cluster
 resource "azurerm_kubernetes_cluster" "k8s_cluster" {
   name                = "aksjenkins1"
-  location            = "${azurerm_resource_group.rg1.location}"
-  resource_group_name = "${azurerm_resource_group.rg1.name}"
+  location            = "${data.azurerm_resource_group.aks_rg.location}"
+  resource_group_name = "${var.resource_group_name}"
   dns_prefix          = "aksjenkinsagent1"
 
   agent_pool_profile {
@@ -18,8 +19,8 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
   }
 
   service_principal {
-    client_id     = "00000000-0000-0000-0000-000000000000"
-    client_secret = "00000000000000000000000000000000"
+    client_id     = "${var.service_principal["app_id"]}"
+    client_secret = "${var.service_principal["client_secret"]}"
   }
 
   tags {
