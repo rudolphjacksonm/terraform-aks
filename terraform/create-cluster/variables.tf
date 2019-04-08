@@ -25,3 +25,11 @@ variable "service_principal" {
     client_secret = "2f0e6ef4-a81e-405b-be2e-12c2173fc9da"
   }
 }
+
+variable "registry_name" {
+  default = "jm030a6dde7628c636"
+}
+
+variable "image_name" {
+  default = "aks-jenkins:1.0"
+}

@@ -58,3 +58,117 @@ output "client_certificate" {
 output "kube_config" {
   value = "${azurerm_kubernetes_cluster.k8s_cluster.kube_config_raw}"
 }
+
+data "azurerm_container_registry" "jmacr" {
+  name                = "${var.registry_name}"
+  resource_group_name = "${var.resource_group_name}"
+}
+
+# manage our docker credentials for gitlab in kubernetes
+resource "kubernetes_secret" "acr_docker_registry" {
+  metadata {
+    name = "docker-registry"
+  }
+
+  data {
+    ".dockercfg" = <<EOF
+{
+  "${data.azurerm_container_registry.jmacr.login_server}": {
+    "username": "${azurerm_azuread_service_principal.aks_sp.client_id}",
+    "password": "${azurerm_azuread_service_principal_password.aks_pass.value}",
+    "auth": "${base64encode(format("%s:%s", "${azurerm_azuread_service_principal.aks_sp.client_id}", "${azurerm_azuread_service_principal_password.aks_pass.value}"))}"
+  }
+}
+EOF
+  }
+
+  type = "kubernetes.io/dockercfg"
+}
+
+resource "kubernetes_deployment" "jenkins_master" {
+  metadata {
+    name = "jenkins-master"
+    labels {
+      role = "jenkins"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels {
+        role = "jenkins"
+      }
+    }
+
+    template {
+      metadata {
+        labels {
+          role = "jenkins"
+        }
+      }
+
+      spec {
+        container {
+          image = "${data.azurerm_container_registry.jmacr.login_server}/${var.image_name}"
+          name  = "jenkins"
+        
+        port {
+          container_port = "8080"
+        }
+
+          resources{
+            limits{
+              cpu    = "0.5"
+              memory = "512Mi"
+            }
+            requests{
+              cpu    = "250m"
+              memory = "50Mi"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "jenkins_service" {
+  metadata {
+    name = "jenkins-service"
+  }
+
+  spec {
+    selector {
+      app = "${kubernetes_deployment.jenkins_master.metadata.0.labels.app}"
+    }
+    
+    session_affinity = "ClientIP"
+    port {
+        port = 8080
+        target_port = 80
+    }
+
+      type = "LoadBalancer"
+  }
+}
+
+resource "kubernetes_role_binding" "jenkins-rbac" {
+  metadata {
+    name = "jenkins-rbac"
+  }
+
+  role_ref {
+    kind = "ClusterRole"
+    name = "cluster-admin"
+    apigroup = "rbac.authorization.k8s.io"
+  }
+
+  subject {
+    kind = "ServiceAccount"
+    name = "default"
+    namespace = "default"
+  }
+
+}
