@@ -33,6 +33,7 @@ docker build -t "${image}" .
 docker push "${image}"
 
 ### Create Application and Service Principal for AKS
-# Currently Terraform doesn't support creating Service Principals, nor does the data
-# source give you the info you need to pass it to AKS
-service_principal=$(az ad sp create-for-rbac -n "${service_principal_name}" --skip-assignment)
+# Terraform documentation on making service principals is shaky, so if you want to precreate
+# the service principal you can do it within this script, then code in the client_id and
+# client_secret into your variables.tf
+# service_principal=$(az ad sp create-for-rbac -n "${service_principal_name}" --skip-assignment)

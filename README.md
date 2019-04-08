@@ -17,7 +17,7 @@ Why are we using a hodge-podge of Azure CLI and Terraform? Why not just go full 
 ### 1. Log into the Azure CLI and create a Container Registry -- Azure CLI
 Log in to the Azure CLI. This can be done by running `setup.azcli` using bash, zsh, or any shell of your choosing. It can also be run from within VSCode. If you want, you can also copy and paste the commands into the terminal of your choosing.
 ### 2. Create a Service Principal for use with your AKS Cluster -- Azure CLI + Terraform
-This can be done a variety of ways. I'm going to try using Terraform to create the cluster and Azure CLI for anything that has to be done before Terraform is involved. If you want to use Terraform to create your cluster, you have to **precreate** the service principal before creating your cluster. The `setup.azcli` script will do this for us. If you want to use the Azure CLI you can just spin up a cluster on-the-fly and it'll assign one for you (however then you lose out on the nice features Terraform provides).
+This can be done a variety of ways. I found an example of using the AzureRM provider to create the service principal before making the cluster, so it's pure Terraform after doing the container registry creation. If you want to see how it works with the AzureCLI uncomment the service principal section.
 ### 3. Create a custom Jenkins Docker image -- Docker + ACR
 We need to create a custom Jenkins image that has the Kubernetes plugin pre-installed. Within in this repository is a `Dockerfile` that contains the necessary config to build the Jenkins image. We want to push this up to our Azure Container Registry.
 ### 4. Create your cluster -- Terraform
