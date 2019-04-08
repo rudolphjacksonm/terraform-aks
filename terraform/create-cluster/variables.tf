@@ -1,3 +1,9 @@
+# Set default name prefix
+variable "name_prefix" {
+  default = "aks-jm"
+}
+
+# Set default location
 variable "location" {
   default = "UK South"
 }

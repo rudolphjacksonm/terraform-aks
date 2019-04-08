@@ -1,12 +1,35 @@
-# Query resource group
-data "azurerm_resource_group" "aks_rg" {
-  name = "jmaksjenkinsuk"
+# Create Resource Group
+data "azurerm_resource_group" "aks" {
+  name     = "${var.resource_group_name}"
+}
+
+# Create Azure AD Application for Service Principal
+resource "azurerm_azuread_application" "aks_app" {
+  name = "${var.name_prefix}-sp"
+}
+
+# Create Service Principal
+resource "azurerm_azuread_service_principal" "aks_sp" {
+  application_id = "${azurerm_azuread_application.aks_app.application_id}"
+}
+
+# Generate random string to be used for Service Principal Password
+resource "random_string" "password" {
+  length  = 32
+  special = true
+}
+
+# Create Service Principal password
+resource "azurerm_azuread_service_principal_password" "aks_pass" {
+  end_date             = "2299-12-30T23:00:00Z"                        # Forever
+  service_principal_id = "${azurerm_azuread_service_principal.aks_sp.id}"
+  value                = "${random_string.password.result}"
 }
 
 # Create AKS cluster
 resource "azurerm_kubernetes_cluster" "k8s_cluster" {
-  name                = "aksjenkins1"
-  location            = "${data.azurerm_resource_group.aks_rg.location}"
+  name                = "${var.name_prefix}-jenkins1"
+  location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
   dns_prefix          = "aksjenkinsagent1"
 
@@ -19,8 +42,8 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
   }
 
   service_principal {
-    client_id     = "${var.service_principal["app_id"]}"
-    client_secret = "${var.service_principal["client_secret"]}"
+    client_id     = "${azurerm_azuread_application.aks_app.application_id}"
+    client_secret = "${azurerm_azuread_service_principal_password.aks_pass.value}"
   }
 
   tags {

@@ -3,13 +3,18 @@
 #az login
 #az account list
 
+### Variables
+registry_name="jm030a6dde7628c636"
+image_name="aks-jenkins"
+version="1.0"
+service_principal_name="aksjenkins"
+
 ### Initial setup
 # Create resource group
 az group create --name jmaksjenkinsuk --location "UK South"
 
 # Create azure container registry
 # Check if it exists first before creating
-registry_name="jm030a6dde7628c636"
 check=$(az acr check-name -n "${registry_name}" --query nameAvailable)
 if [[ $check == 'true' ]]; then
   echo "Creating ACR ${registry_name}"
@@ -23,11 +28,11 @@ sleep 10
 az acr login --name "${registry_name}"
 
 ### Create custom Jenkins image
-image="${registry_name}.azurecr.io/aks-jenkins:1.0"
+image="${registry_name}.azurecr.io/${image_name}:${version}"
 docker build -t "${image}" .
 docker push "${image}"
 
 ### Create Application and Service Principal for AKS
 # Currently Terraform doesn't support creating Service Principals, nor does the data
 # source give you the info you need to pass it to AKS
-service_principal=$(az ad sp create-for-rbac -n "aksjenkins" --skip-assignment)
+service_principal=$(az ad sp create-for-rbac -n "${service_principal_name}" --skip-assignment)
