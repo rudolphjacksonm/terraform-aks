@@ -1,6 +1,7 @@
 ### Prerequisites
 * Azure CLI
 * Docker
+* Helm
 * Kubernetes
 * Terraform
 

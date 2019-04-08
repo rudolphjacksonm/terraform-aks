@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "rg1" {
   name     = "aksRG1"
-  location = "UK South"
+  location = "${var.location}"
 }
 
 resource "azurerm_kubernetes_cluster" "k8s_cluster" {
