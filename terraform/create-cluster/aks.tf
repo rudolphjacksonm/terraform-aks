@@ -65,31 +65,31 @@ data "azurerm_container_registry" "jmacr" {
 }
 
 # manage our docker credentials for gitlab in kubernetes
-resource "kubernetes_secret" "acr_docker_registry" {
-  metadata {
-    name = "docker-registry"
-  }
-
-  data {
-    ".dockercfg" = <<EOF
-{
-  "${data.azurerm_container_registry.jmacr.login_server}": {
-    "username": "${azurerm_azuread_service_principal.aks_sp.client_id}",
-    "password": "${azurerm_azuread_service_principal_password.aks_pass.value}",
-    "auth": "${base64encode(format("%s:%s", "${azurerm_azuread_service_principal.aks_sp.client_id}", "${azurerm_azuread_service_principal_password.aks_pass.value}"))}"
-  }
-}
-EOF
-  }
-
-  type = "kubernetes.io/dockercfg"
-}
+##resource "kubernetes_secret" "acr_docker_registry" {
+#  metadata {
+#    name = "docker-registry"
+#  }
+#
+#  data {
+#    ".dockercfg" = <<EOF
+#{
+#  "${data.azurerm_container_registry.jmacr.login_server}": {
+#    "username": "${azurerm_azuread_service_principal.aks_sp.id}",
+#    "password": "${azurerm_azuread_service_principal_password.aks_pass.value}",
+#    "auth": "${base64encode(format("%s:%s", "${azurerm_azuread_service_principal.aks_sp.id}", "$#{azurerm_azuread_service_principal_password.aks_pass.value}"))}"
+#  }
+#}
+#EOF
+#  }
+#
+#  type = "kubernetes.io/dockercfg"
+#}
 
 resource "kubernetes_deployment" "jenkins_master" {
   metadata {
     name = "jenkins-master"
     labels {
-      role = "jenkins"
+      app = "jenkins"
     }
   }
 
@@ -98,27 +98,33 @@ resource "kubernetes_deployment" "jenkins_master" {
 
     selector {
       match_labels {
-        role = "jenkins"
+        app = "jenkins"
       }
     }
 
     template {
       metadata {
         labels {
-          role = "jenkins"
+          app = "jenkins"
         }
       }
 
       spec {
+        #image_pull_secrets {
+        #  name = "${kubernetes_secret.acr_docker_registry.metadata.0.name}"
+        #}
         container {
-          image = "${data.azurerm_container_registry.jmacr.login_server}/${var.image_name}"
+          image = "jenkins/jenkins:lts"
           name  = "jenkins"
         
         port {
           container_port = "8080"
         }
-
-          resources{
+        env {
+          name = "JAVA_OPTS"
+          value = "-Djenkins.install.runSetupWizard=false"
+        }
+        resources {
             limits{
               cpu    = "0.5"
               memory = "512Mi"
@@ -146,8 +152,8 @@ resource "kubernetes_service" "jenkins_service" {
     
     session_affinity = "ClientIP"
     port {
-        port = 8080
-        target_port = 80
+        port = 80
+        target_port = 8080
     }
 
       type = "LoadBalancer"
