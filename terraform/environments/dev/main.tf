@@ -19,18 +19,10 @@ module "cosmosdb" {
   resource_group_name     = "${local.resource_group_name}"
 }
 
-module "service_principal" {
-  source                  = "../../modules/service-principal"
-  prefix                  = "${local.prefix}"
-  environment             = "${local.environment}"
+module "dev_aks_cluster" {
+  source                  = "../../modules/aks"
+  prefix                  = "jm"
+  environment             = "dev"
+  location                = "UK South"
+  resource_group_name     = "${local.resource_group_name}"
 }
-
-#module "dev_aks_cluster" {
-#  source                  = "../../modules/aks"
-#  name_prefix             = "jm-dev"
-#  environment             = "dev"
-#  kube_directory          = "/Users/jackmo@kainos.com/.kube"
-#  location                = "UK South"
-#  resource_group_name     = "jmaksjenkinsuk"
-#  failover_location       = "UK West"
-#}

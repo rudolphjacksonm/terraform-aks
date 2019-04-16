@@ -1,14 +1,12 @@
 # Create Service Principal for AKS cluster
-module "aks" {
-  source                  = "../../modules/aks"
-  prefix                  = "${local.prefix}"
-  environment             = "${local.environment}"
-  location                = "${local.location}"
-  resource_group_name     = "${local.resource_group_name}"
+module "service_principal" {
+  source                  = "../service-principal"
+  prefix                  = "${var.prefix}"
+  environment             = "${var.environment}"
 }
 
 # Create AKS cluster
-resource "azurerm_kubernetes_cluster" "k8s_cluster" {
+resource "azurerm_kubernetes_cluster" "aks_cluster" {
   name                = "${var.prefix}-aks-${var.environment}"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
@@ -23,8 +21,8 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
   }
 
   service_principal {
-    client_id     = "${module.aks.service_principal_client_id}"
-    client_secret = "${module.aks.service_principal_client_secret}"
+    client_id     = "${module.service_principal.service_principal_client_id}"
+    client_secret = "${module.service_principal.service_principal_client_secret}"
   }
 
   tags {
