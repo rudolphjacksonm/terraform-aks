@@ -23,7 +23,14 @@ We need to create a custom Jenkins image that has the Kubernetes plugin pre-inst
 ### 3. Create a Service Principal for use with your AKS Cluster --Terraform
 This can be done a variety of ways. I found an example of using the AzureRM provider to create the service principal before making the cluster, so it's pure Terraform after doing the container registry creation. If you want to see how it works with the AzureCLI uncomment the service principal section.
 ### 4. Create your cluster -- Terraform
-Change into the `terraform/create-cluster` directory and run `terraform init` to ensure you have the AzureRM module installed locally. Then run `terraform apply` to create your AKS cluster.
+Change into the `terraform/create-cluster` directory and run `terraform init` to ensure you have the AzureRM module installed locally. Then, set the following environment variables:
+```
+$ export ARM_CLIENT_ID="00000000-0000-0000-0000-000000000000"
+$ export ARM_CLIENT_SECRET="00000000-0000-0000-0000-000000000000"
+$ export ARM_SUBSCRIPTION_ID="00000000-0000-0000-0000-000000000000"
+$ export ARM_TENANT_ID="00000000-0000-0000-0000-000000000000"
+```
+ Then run `terraform apply` to create your AKS cluster.
 ### 5. Deploy your services -- Terraform
 1. Run `terraform output kube_config > ~/.kube/azurek8s`
 2. Run `export KUBECONFIG=~/.kube/azurek8s` before running this or you will not be able to connect to your cluster using Terraform.
