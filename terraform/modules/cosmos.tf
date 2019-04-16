@@ -21,7 +21,7 @@ resource "azurerm_cosmosdb_account" "cosmosdb" {
   # Primary location
   geo_location {
     prefix            = "tfex-cosmos-db-${random_integer.ri.result}-customid"
-    location          = "${azurerm_resource_group.rg.location}"
+    location          = "${var.location}"
     failover_priority = 0
   }
 

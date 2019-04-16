@@ -13,13 +13,14 @@ Why are we using a hodge-podge of Azure CLI and Terraform? Why not just go full 
 
 *Most importantly*, if we run `terraform destroy` we'll kill our container registry along with it! That certainly wouldn't be nice.
 
-## Provisioning
-### 1. Log into the Azure CLI and create a Container Registry -- Azure CLI
-Log in to the Azure CLI. This can be done by running `setup.azcli` using bash, zsh, or any shell of your choosing. It can also be run from within VSCode. If you want, you can also copy and paste the commands into the terminal of your choosing.
-### 2. Create a custom Jenkins Docker image -- Docker + ACR
-Note: this is done automatically when you run `setup.azcli`.
+## Provisioning - the Hard Way, but the Right Way
+This is lifted from an amazing blog post over at [kubernauts.io](https://blog.kubernauts.io/aks-deployment-automation-with-terraform-and-multi-aks-cluster-management-with-rancher-6da9865ad52b).
+### 1. Create an Azure Storage Account -- Azure CLI
+The Why: We need to create an Azure Storage Account to store our `.tfstate` files. This can be done on Jenkins or locally; either way it'll have to be up and running before you can start using Terraform properly with a remote state. You *could* use S3, but then you'd be storing your `.tfstate` files in a separate cloud provider which is a bit nonsensical.
 
-We need to create a custom Jenkins image that has the Kubernetes plugin pre-installed. Within in this repository is a `Dockerfile` that contains the necessary config to build the Jenkins image. We want to push this up to our Azure Container Registry.
+The How: Log in to the Azure CLI. This can be done by running `create_storage_account.azcli` using bash, zsh, or any shell of your choosing. It can also be run from within VSCode.
+### 2. Setup your Terraform Backend
+This part is pretty self-explanatory if you're familiar with Terraform. Update the `state.tf` file in the `terraform` directory to point to your storage container.
 ### 3. Create a Service Principal for use with your AKS Cluster --Terraform
 This can be done a variety of ways. I found an example of using the AzureRM provider to create the service principal before making the cluster, so it's pure Terraform after doing the container registry creation. If you want to see how it works with the AzureCLI uncomment the service principal section.
 ### 4. Create your cluster -- Terraform
