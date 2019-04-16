@@ -5,7 +5,3 @@ provider "azurerm" {
 provider "azuread" {
   version = "=0.1.0"
 }
-
-provider "kubernetes" {
-  version = "=1.5.2"
-}
