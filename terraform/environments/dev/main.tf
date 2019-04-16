@@ -15,6 +15,7 @@ module "cosmosdb" {
   source                  = "../../modules/cosmosdb"
   failover_location       = "UK West"
   location                = "${local.location}"
+  name                    = "${local.prefix}-${local.environment}-cosmosdb-account"
   resource_group_name     = "${local.resource_group_name}"
 }
 

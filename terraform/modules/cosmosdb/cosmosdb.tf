@@ -5,6 +5,7 @@ resource "random_integer" "ri" {
 }
 
 resource "azurerm_cosmosdb_account" "cosmosdb" {
+  name                      = "${var.name}"
   resource_group_name       = "${var.resource_group_name}"
   location                  = "${var.location}"
   offer_type                = "Standard"
@@ -30,8 +31,4 @@ resource "azurerm_cosmosdb_account" "cosmosdb" {
     location          = "${var.failover_location}"
     failover_priority = 1
   }
-}
-
-output "cosmosdb_endpoint" {
-  value = "${azurerm_cosmosdb_account.cosmosdb.cosmosdb_endpoint}"
 }
