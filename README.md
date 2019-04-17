@@ -16,11 +16,9 @@ The Why: We need to create an Azure Storage Account to store our `.tfstate` file
 The How: Log in to the Azure CLI. This can be done by running `create_storage_account.azcli` using bash, zsh, or any shell of your choosing. It can also be run from within VSCode.
 ### 2. Setup your Terraform Backend
 This part is pretty self-explanatory if you're familiar with Terraform. Update the `state.tf` file in the `terraform` directory to point to your storage container.
-### 3. Create a Service Principal for use with your AKS Cluster --Terraform
-This can be done a variety of ways. I found an example of using the AzureRM provider to create the service principal before making the cluster, so it's pure Terraform after doing the container registry creation. If you want to see how it works with the AzureCLI uncomment the service principal section.
-### 4. Create your cluster -- Terraform
+### 3. Create your cluster -- Terraform
 Change into the `terraform/create-cluster` directory and run `terraform init` to ensure you have the AzureRM module installed locally. Then run `terraform apply` to create your AKS cluster.
-### 5. Deploy your services -- Helm
+### 4. Deploy your services -- Helm
 1. Run `az aks get-credentials`
 2. Run `helm init` to install Helm and Tiller into your cluster
 3. TBD - change into the helm directory and run `helm install`
