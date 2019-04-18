@@ -1,8 +1,9 @@
 ### Not started
-* Kubernetes templates -- need to convert to helm charts
-* Access controls for reaching cluster and Jenkins frontend; will need to create load balancer in Terraform and ensure only accessible by my public IP
-* Will likely need to figure out proper access controls to the Jenkins frontend and ensure it's not wide open
+* Upgrade AKS cluster size, currently too small to run all pods
+* Update Terraform to create Azure Cache for Redis
+* Update Terraform to create Queues
+* Connect app to CosmosDB
+* Connect app to Azure Cache for Redis
+* Connect app to Azure Queues
 ### WIP
 ### Done
-* Add integration with Azure Container Registry
-* Add steps for creating custom Jenkins image w/ plugins already installed
