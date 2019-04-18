@@ -22,3 +22,21 @@ Change into the `terraform/create-cluster` directory and run `terraform init` to
 1. Run `az aks get-credentials`
 2. Run `helm init` to install Helm and Tiller into your cluster
 3. TBD - change into the helm directory and run `helm install`
+
+
+##### Notes
+* You can pass values to dependent charts mentioned in your `requirements.yaml` using this format:
+```
+Dependent-chart-name (must match name field in requirements.yaml):
+  spec:
+    replicas: 3
+```
+Here's another example:
+```
+nginx-ingress:
+  controller:
+    service:
+        annotations:
+          service.beta.kubernetes.io/azure-dns-label-name: jm-aks
+```
+* You need to run `helm dep up` to get the nginx-ingress chart specified in `requirements.yaml` before you can run `helm install`
