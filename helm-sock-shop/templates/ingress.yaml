@@ -6,8 +6,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: jmsockshop.uksouth.cloudapp.azure.com
-    http:
+  - http:
       paths:
       - path: /
         backend:
