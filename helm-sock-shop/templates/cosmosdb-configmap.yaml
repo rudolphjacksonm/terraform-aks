@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cosmosdb-configmap"
+data:
+  application.properties: |
+    server.port=${port:8081}
+    spring.data.mongodb.uri=mongodb://<cosmosdb_account_name>:<password>@<database_host_name>:10255/<database name>?ssl=true&replicaSet=globaldb
+    endpoints.health.enabled=false
+    spring.zipkin.baseUrl=http://${zipkin_host:zipkin}:9411/
+    spring.zipkin.enabled=${zipkin_enabled:false}
+    spring.sleuth.sampler.percentage=1.0
+    spring.application.name=carts
+    # Disable actuator metrics endpoints
+    endpoints.metrics.enabled=false
+    endpoints.prometheus.id=metrics

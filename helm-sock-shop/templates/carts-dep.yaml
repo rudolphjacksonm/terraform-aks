@@ -15,20 +15,18 @@ spec:
       containers:
       - name: carts
         image: weaveworksdemos/carts:0.4.8
+        command: ["/usr/local/bin/java.sh"]
+        args: ["-jar /usr/src/app/app.jar", "--port=80", "--spring.config.location=/mnt/config/application.properties"]
         env:
-         {{- if .Values.zipkin.enabled }}
-         - name: ZIPKIN
-           value: {{ .Values.zipkin.url }}
-         {{- end }}
-         - name: JAVA_OPTS
-           value: {{ .Values.java.options }}
+         #- name: JAVA_OPTS
+         #  value: {{ .Values.java.options }}
         resources:
           limits:
             cpu: 300m
-            memory: 2000Mi
+            memory: 200Mi
           requests:
             cpu: 300m
-            memory: 2000Mi
+            memory: 200Mi
         ports:
         - containerPort: 80
         securityContext:
@@ -43,6 +41,8 @@ spec:
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
+        - mountPath: /mnt/config
+          name: config-volume
         livenessProbe:
           httpGet:
             path: /health
@@ -59,3 +59,10 @@ spec:
         - name: tmp-volume
           emptyDir:
             medium: Memory
+        - name: config-volume
+          configMap:
+            defaultMode: 420
+            name: cosmosdb-configmap
+            items:
+            - key: application.properties
+              path: application.properties
