@@ -11,9 +11,14 @@ frontend:
 loadtest:
   replicas: 2
   enabled: false
-# Inject this value into the chart referenced in requirements.yaml
-# This way we don't need to download and store the whole nginx-ingress chart; we just refer to it
+cosmosdb:
+  accountName: jm-dev-cosmosdb-account
+  databaseHostname: jm-dev-cosmosdb-account.documents.azure.com
+  databaseName: sockshop
+  username: jm-dev-cosmosdb-account
+  password: 
 # as a dependency and pass it the changes we need
+### Can be overriden with another values file when deploying w/ Jenkins
 nginx-ingress:
   controller:
     service:

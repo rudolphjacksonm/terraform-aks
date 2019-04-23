@@ -3,6 +3,7 @@ locals {
   resource_group_name     = "jm-aks-rg"
   environment             = "dev"
   prefix                  = "jm"
+  node_count              = "2"
 }
 module "dev_resource_group" {
   source                  = "../../modules/resource-group"
@@ -25,4 +26,5 @@ module "dev_aks_cluster" {
   environment             = "dev"
   location                = "UK South"
   resource_group_name     = "${local.resource_group_name}"
+  node_count              = "${local.node_count}"
 }

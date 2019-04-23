@@ -5,7 +5,7 @@ metadata:
 data:
   application.properties: |
     server.port=${port:8081}
-    spring.data.mongodb.uri=mongodb://<cosmosdb_account_name>:<password>@<database_host_name>:10255/<database name>?ssl=true&replicaSet=globaldb
+    spring.data.mongodb.uri=mongodb://{{ .Values.cosmosdb.accountName }}:{{ .Values.cosmosdb.password }}@{{ .Values.cosmosdb.databaseHostname }}:10255/{{ .Values.cosmosdb.databaseName }}?ssl=true&replicaSet=globaldb
     endpoints.health.enabled=false
     spring.zipkin.baseUrl=http://${zipkin_host:zipkin}:9411/
     spring.zipkin.enabled=${zipkin_enabled:false}

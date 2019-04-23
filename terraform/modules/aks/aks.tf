@@ -14,7 +14,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 
   agent_pool_profile {
     name            = "default"
-    count           = 1
+    count           = "${var.node_count}"
     vm_size         = "Standard_D1_v2"
     os_type         = "Linux"
     os_disk_size_gb = 30

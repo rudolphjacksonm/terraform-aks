@@ -25,12 +25,12 @@ spec:
         ports:
         - containerPort: 80
         env:
-        - name: MONGO_HOST
-          value: user-db:27017
-        {{- if .Values.zipkin.enabled }}
-        - name: ZIPKIN
-          value: http://{{ .Values.zipkin.url }}:9411/api/v1/spans
-        {{- end }}
+        #- name: MONGO_HOST
+        #  value: {{ .Values.cosmosdb.databaseHostname }}:10255
+        #- name: MONGO_USER
+        #  value: {{ .Values.cosmosdb.username }}
+        #- name: MONGO_PASS
+        #  value: {{ .Values.cosmosdb.password}}
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
