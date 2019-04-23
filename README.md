@@ -25,6 +25,7 @@ Change into the `terraform/create-cluster` directory and run `terraform init` to
 
 
 ##### Notes
+* I've moved helm charts that I'm no longer using or am in the process of replacing to the `backup` folder.
 * You can pass values to dependent charts mentioned in your `requirements.yaml` using this format:
 ```
 Dependent-chart-name (must match name field in requirements.yaml):
