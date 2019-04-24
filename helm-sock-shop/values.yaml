@@ -12,17 +12,17 @@ loadtest:
   replicas: 2
   enabled: false
 cosmosdb:
-  accountName: jm-dev-cosmosdb-account
-  databaseHostname: jm-dev-cosmosdb-account.documents.azure.com
-  databaseName: sockshop
-  username: jm-dev-cosmosdb-account
+  accountName: cosmosdb-account
+  databaseHostname: cosmosdb-account.documents.azure.com
+  databaseName: database
+  username: cosmosdb-account
   password: <password>
 # Inject this value into the chart referenced in requirements.yaml
 # This way we don't need to download and store the whole nginx-ingress chart; we just refer to it
 # as a dependency and pass it the changes we need
 ### Can be overriden with another values file when deploying w/ Jenkins
-nginx-ingress:
-  controller:
-    service:
-        annotations:
-          service.beta.kubernetes.io/azure-dns-label-name: jm-aks
+#nginx-ingress:
+#  controller:
+#    service:
+#        annotations:
+#          service.beta.kubernetes.io/azure-dns-label-name: jm-aks

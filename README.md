@@ -4,6 +4,8 @@
 * Helm
 * Kubernetes
 * Terraform
+* The helm-secrets plugin (for encrypting and decrypting secrets files)
+* `gpg` for creating PGP keys
 
 ### NOTE: AzureRM Provider for Terraform
 The AzureRM provider is pinned to version `1.24` at the moment. When version `2.0` is released it will bring breaking changes to the way Service Principals are created. There is a guide for migrating to the new version [here](https://www.terraform.io/docs/providers/azurerm/guides/migrating-to-azuread.html).
@@ -21,10 +23,13 @@ Change into the `terraform/create-cluster` directory and run `terraform init` to
 ### 4. Deploy your services -- Helm
 1. Run `az aks get-credentials`
 2. Run `helm init` to install Helm and Tiller into your cluster
-3. TBD - change into the helm directory and run `helm install`
+3. Update the relevant secrets files with the credentials for your cloud services
+4. Encrypt the secrets files using `helm secrets`
+4. Run `helm install . -f ../helm-environments/dev/values.yaml`
 
 
 ##### Notes
+* Going to try using the helm secrets plugin to encrypt secrets files.
 * I've moved helm charts that I'm no longer using or am in the process of replacing to the `backup` folder.
 * You can pass values to dependent charts mentioned in your `requirements.yaml` using this format:
 ```
