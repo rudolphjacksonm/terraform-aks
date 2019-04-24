@@ -10,7 +10,7 @@ cosmosdb:
   databaseHostname: jm-dev-cosmosdb-account.documents.azure.com
   databaseName: sockshop
   username: jm-dev-cosmosdb-account
-  password: ST54tTouCv6ydYLFaOoD8N8CYckrTgA1MbUJgIM4xYjGuEZLzELJzrW18dYVNbF5CvAmxzHrYc6LWAOkFnHuYg==
+  password: <password>
 # Inject this value into the chart referenced in requirements.yaml
 # This way we don't need to download and store the whole nginx-ingress chart; we just refer to it
 # as a dependency and pass it the changes we need
