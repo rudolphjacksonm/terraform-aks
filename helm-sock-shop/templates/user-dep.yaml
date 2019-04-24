@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: user
-        image: weaveworksdemos/user:0.4.4
+        image: chrisredfield306/user-azure:0.1.0
         resources:
           limits:
             cpu: 300m
@@ -25,12 +25,12 @@ spec:
         ports:
         - containerPort: 80
         env:
-        #- name: MONGO_HOST
-        #  value: {{ .Values.cosmosdb.databaseHostname }}:10255
-        #- name: MONGO_USER
-        #  value: {{ .Values.cosmosdb.username }}
-        #- name: MONGO_PASS
-        #  value: {{ .Values.cosmosdb.password}}
+        - name: MONGO_HOST
+          value: {{ .Values.cosmosdb.databaseHostname }}:10255
+        - name: MONGO_USER
+          value: {{ .Values.cosmosdb.username }}
+        - name: MONGO_PASS
+          value: {{ .Values.cosmosdb.password}}
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001
