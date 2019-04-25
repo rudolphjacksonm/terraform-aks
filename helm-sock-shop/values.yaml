@@ -11,6 +11,7 @@ frontend:
 loadtest:
   replicas: 2
   enabled: false
+# These variables should be overridden by a values file per-environment
 cosmosdb:
   accountName: cosmosdb-account
   databaseHostname: cosmosdb-account.documents.azure.com

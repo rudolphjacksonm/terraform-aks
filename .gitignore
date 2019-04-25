@@ -3,3 +3,4 @@ terraform/*/.terraform/
 *.tfstate*
 docker-machine-driver*
 *.DS_Store*
+*.yaml.dec
