@@ -24,8 +24,11 @@ Change into the `terraform/create-cluster` directory and run `terraform init` to
 1. Run `az aks get-credentials`
 2. Run `helm init` to install Helm and Tiller into your cluster
 3. Update the relevant secrets files with the credentials for your cloud services
-4. Encrypt the secrets files using `helm secrets`
+4. Decrypt the secrets files using `helm secrets`
 4. Run `helm install . -f ../helm-environments/dev/values.yaml`
+
+## Updating this repository
+Updating this repository should be as painless as possible. Currently I can't find a way to get the `helm secrets` plugin to automatically decrypt and apply secrets when running all of the charts. For now I'm manually encrypting files with my PGP key and uploading them to GitHub. Whenever I want to install these charts I'm decrypting the files with the same key, overwriting the encrypted version with the decrypted `.yaml.dec` file, then running `helm install`.
 
 
 ##### Notes
