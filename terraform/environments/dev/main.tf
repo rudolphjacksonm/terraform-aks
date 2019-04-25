@@ -12,19 +12,29 @@ module "dev_resource_group" {
   resource_group_name     = "${local.resource_group_name}"
 }
 
-module "cosmosdb" {
+module "dev_cosmosdb" {
   source                  = "../../modules/cosmosdb"
   failover_location       = "UK West"
   location                = "${local.location}"
   name                    = "${local.prefix}-${local.environment}-cosmosdb-account"
-  resource_group_name     = "${local.resource_group_name}"
+  resource_group_name     = "${module.dev_resource_group.resource_group_name}"
 }
 
 module "dev_aks_cluster" {
   source                  = "../../modules/aks"
-  prefix                  = "jm"
-  environment             = "dev"
-  location                = "UK South"
-  resource_group_name     = "${local.resource_group_name}"
+  prefix                  = "${local.prefix}"
+  environment             = "${local.environment}"
+  location                = "${local.location}"
+  resource_group_name     = "${module.dev_resource_group.resource_group_name}"
   node_count              = "${local.node_count}"
+}
+
+module "dev_mysql_server" {
+  source                  = "../../modules/azmysql"
+  prefix                  = "${local.prefix}"
+  environment             = "${local.environment}"
+  location                = "${local.location}"
+  resource_group_name     = "${module.dev_resource_group.resource_group_name}"
+  # Passing this so there is an explicit dependency on the cluster being created first
+  aks_cluster_name        = "${module.dev_aks_cluster.aks_cluster_name}"
 }
