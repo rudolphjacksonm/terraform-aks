@@ -8,7 +8,7 @@ resource "random_string" "mysqladmin_password" {
 }
 
 resource "azurerm_mysql_server" "test" {
-  name                = "mysql-server-1"
+  name                = "jm-aks-mysql"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
 
