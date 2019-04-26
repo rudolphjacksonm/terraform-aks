@@ -38,3 +38,11 @@ module "dev_mysql_server" {
   # Passing this so there is an explicit dependency on the cluster being created first
   aks_cluster_name        = "${module.dev_aks_cluster.aks_cluster_name}"
 }
+
+output "dev_mysql_server_password" {
+  value = "${module.dev_mysql_server.mysql_password}"
+}
+
+output "dev_cosmosdb_password" {
+  value = "${module.dev_cosmosdb.cosmosdb_password}"
+}
