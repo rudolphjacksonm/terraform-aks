@@ -44,21 +44,21 @@ data "azurerm_public_ips" "egress" {
   resource_group_name = "${var.resource_group_name}"
 }
 
-resource "azurerm_mysql_firewall_rule" "aks-egress" {
-  name                = "aks-egress"
-  resource_group_name = "${var.resource_group_name}"
-  server_name         = "${azurerm_mysql_server.test.name}"
-  start_ip_address    = "${data.azurerm_public_ips.egress.public_ips.0.ip_address}"
-  end_ip_address      = "${data.azurerm_public_ips.egress.public_ips.0.ip_address}"
-}
-
-resource "azurerm_mysql_firewall_rule" "aks-egress2" {
-  name                = "aks-egress2"
-  resource_group_name = "${var.resource_group_name}"
-  server_name         = "${azurerm_mysql_server.test.name}"
-  start_ip_address    = "${data.azurerm_public_ips.egress.public_ips.1.ip_address}"
-  end_ip_address      = "${data.azurerm_public_ips.egress.public_ips.1.ip_address}"
-}
+##resource "azurerm_mysql_firewall_rule" "aks-egress" {
+#  name                = "aks-egress"
+#  resource_group_name = "${var.resource_group_name}"
+#  server_name         = "${azurerm_mysql_server.test.name}"
+#  start_ip_address    = "${data.azurerm_public_ips.egress.public_ips.0.ip_address}"
+#  end_ip_address      = "${data.azurerm_public_ips.egress.public_ips.0.ip_address}"
+#}
+#
+#resource "azurerm_mysql_firewall_rule" "aks-egress2" {
+#  name                = "aks-egress2"
+#  resource_group_name = "${var.resource_group_name}"
+#  server_name         = "${azurerm_mysql_server.test.name}"
+#  start_ip_address    = "${data.azurerm_public_ips.egress.public_ips.1.ip_address}"
+#  end_ip_address      = "${data.azurerm_public_ips.egress.public_ips.1.ip_address}"
+#}
 
 output "mysql_password" {
   value = "${random_string.mysqladmin_password.result}"
