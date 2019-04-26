@@ -43,6 +43,7 @@ spec:
           name: tmp-volume
         - mountPath: /mnt/config
           name: config-volume
+          sub_path: "application.properties"
         ##livenessProbe:
         #  httpGet:
         #    path: /health
@@ -61,8 +62,5 @@ spec:
             medium: Memory
         - name: config-volume
           configMap:
-            defaultMode: 420
             name: carts-configmap
-            items:
-            - key: application.properties
-              path: application.properties
+            defaultMode: 420
