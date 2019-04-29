@@ -2,34 +2,34 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: orders
+  name: shipping
   labels:
-    name: orders
+    name: shipping
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: orders
+        name: shipping
     spec:
       containers:
-      - name: orders
-        image: weaveworksdemos/orders:0.4.7
+      - name: shipping
+        image: weaveworksdemos/shipping:0.4.8
         command: ["/usr/local/bin/java.sh"]
         args: ["-jar /usr/src/app/app.jar", "--port=80", "--spring.config.location=/mnt/config/application.properties"]
         env:
-         {{- if .Values.zipkin.enabled }}
+        {{- if .Values.zipkin.enabled }}
          - name: ZIPKIN
-           value: {{ .Values.zipkin.url }}
-         {{- end }}
+           value: {{ .Values.zipkin.urlj }}
+        {{- end }}
          - name: JAVA_OPTS
            value: {{ .Values.java.options }}
         resources:
           limits:
-            cpu: 500m
+            cpu: 300m
             memory: 700Mi
           requests:
-            cpu: 200m
+            cpu: 300m
             memory: 700Mi
         ports:
         - containerPort: 80
@@ -66,6 +66,7 @@ spec:
             medium: Memory
         - name: config-volume
           configMap:
-            name: orders-configmap
+            name: shipping-configmap
             defaultMode: 420
+
 
