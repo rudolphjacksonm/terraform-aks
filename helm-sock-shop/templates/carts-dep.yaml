@@ -18,6 +18,10 @@ spec:
         command: ["/usr/local/bin/java.sh"]
         args: ["-jar /usr/src/app/app.jar", "--port=80", "--spring.config.location=/mnt/config/application.properties"]
         env:
+        {{- if .Values.zipkin.enabled }}
+        - name: ZIPKIN
+        value: {{ .Values.zipkin.url }}
+        {{- end }}
          #- name: JAVA_OPTS
          #  value: {{ .Values.java.options }}
         resources:

@@ -24,8 +24,8 @@ spec:
             memory: 100Mi
         ports:
         - containerPort: 80
-        {{- if .Values.zipkin.enabled }}
         env:
+        {{- if .Values.zipkin.enabled }}
         - name: ZIPKIN
           value: http://{{ .Values.zipkin.url }}:9411/api/v1/spans
         {{- end }}

@@ -23,8 +23,12 @@ spec:
             cpu: 100m
             memory: 400Mi
         ports:
-        - containerPort: 80
+        - containerPort: 8084
         env:
+        {{- if .Values.zipkin.enabled }}
+        - name: ZIPKIN
+          value: http://{{ .Values.zipkin.url }}:9411/api/v1/spans
+        {{- end }}
         - name: MONGO_HOST
           value: {{ .Values.cosmosdb.databaseHostname }}:10255
         - name: MONGO_USER
