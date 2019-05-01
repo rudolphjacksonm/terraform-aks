@@ -1,0 +1,14 @@
+# CosmosDB connection details
+cosmosdb:
+  accountName: cosmosdb-account
+  databaseHostname: cosmosdb-account.documents.azure.com
+  databaseName: database
+  username: cosmosdb-account
+  password: <password>
+# zipkin config
+zipkin: 
+  enabled:  false
+  url: zipkin.zipkin.svc.cluster.local
+# java options
+java:
+  options: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom

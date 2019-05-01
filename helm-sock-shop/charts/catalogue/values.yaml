@@ -1,0 +1,5 @@
+# Azure MySQL Database details
+# zipkin config
+zipkin: 
+  enabled:  false
+  url: zipkin.zipkin.svc.cluster.local

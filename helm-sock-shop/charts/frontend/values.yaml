@@ -1,0 +1,3 @@
+# Frontend config
+frontend:
+  replicas: 1

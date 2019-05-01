@@ -1,0 +1,4 @@
+# zipkin
+zipkin: 
+  enabled:  false
+  url: zipkin.zipkin.svc.cluster.local
