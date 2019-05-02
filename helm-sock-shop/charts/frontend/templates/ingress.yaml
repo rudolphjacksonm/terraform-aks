@@ -2,8 +2,10 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: socks-ingress
+  {{- with .Values.frontend.ingress.annotations }}
   annotations:
-    kubernetes.io/ingress.class: nginx
+    {{ toYaml . }}
+    {{- end }}
 spec:
   rules:
   - http:
