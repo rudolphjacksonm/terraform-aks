@@ -23,9 +23,11 @@ Change into the `terraform/create-cluster` directory and run `terraform init` to
 ### 4. Deploy your services -- Helm
 1. Run `az aks get-credentials`
 2. Run `helm init` to install Helm and Tiller into your cluster
-3. Update the relevant secrets files with the credentials for your cloud services
-4. Decrypt the secrets files using `helm secrets`
-4. Run `helm install . -f ../helm-environments/dev/values.yaml`
+3. Label the deployment namespace so cert-manager will NOT validate resources: `kubectl label namespace default certmanager.k8s.io/disable-validation="true"`
+4. Install the CRDs into the cluster to support `cert-manager`: `kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.7/deploy/manifests/00-crds.yaml`
+5. Update the relevant secrets files with the credentials for your cloud services
+6. Decrypt the secrets files using `helm secrets`
+7. Run `helm install . -f ../helm-environments/dev/values.yaml`
 
 ## Updating this repository
 Updating this repository should be as painless as possible. Currently I can't find a way to get the `helm secrets` plugin to automatically decrypt and apply secrets when running all of the charts. For now I'm manually encrypting files with my PGP key and uploading them to GitHub. Whenever I want to install these charts I'm decrypting the files with the same key, overwriting the encrypted version with the decrypted `.yaml.dec` file, then running `helm install`.
