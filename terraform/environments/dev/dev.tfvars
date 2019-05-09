@@ -1,5 +1,5 @@
 location                = "UK South"
-resource_group_name       = "sockshop-rg"
+resource_group_name     = "sockshop-rg"
 environment             = "dev"
 prefix                  = "jm"
 node_count              = "2"
