@@ -1,5 +1,7 @@
 location                = "UK South"
-resource_group_name     = "jm-aks-rg"
+resource_group_name       = "sockshop-rg"
 environment             = "dev"
 prefix                  = "jm"
 node_count              = "2"
+project                 = "sockshop"
+env                     = "dev"
