@@ -38,11 +38,3 @@ resource "azurerm_mysql_database" "socksdb" {
   charset             = "utf8"
   collation           = "utf8_unicode_ci"
 }
-
-output "mysql_password" {
-  value = "${random_string.mysqladmin_password.result}"
-}
-
-output "mysql_hostname" {
-  value = "${azurerm_mysql_server.test.fqdn}"
-}

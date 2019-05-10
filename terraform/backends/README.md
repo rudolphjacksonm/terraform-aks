@@ -23,10 +23,20 @@ access_key                = ""
 - An Azure Storage Account
 
 You now have a valid backend configuration using an Azure Storage Account. This can be used when applying any of the components by running the following: 
+
 Using Azure CLI and access key for the storage account:
-`terraform init -backend-config=../../backends/config/dev/dev.backend.config`
+```
+export ARM_ACCESS_KEY=<sensitive>
+terraform init -backend-config=../../backends/config/dev/dev.backend.config
+```
+
 Using an Azure Service Principal:
-`export ARM_CLIENT_ID=00000-000000-000000-00000`
-`export ARM_CLIENT_SECRET=<sensitive>`
-`export ARM_TENANT_ID=00000-000000-000000-00000`
-`export ARM_SUBSCRIPTION_ID=00000-000000-000000-00000`
+```
+export ARM_CLIENT_ID=00000-000000-000000-00000
+export ARM_CLIENT_SECRET=<sensitive>
+export ARM_TENANT_ID=00000-000000-000000-00000
+export ARM_SUBSCRIPTION_ID=00000-000000-000000-00000
+terraform init -backend-config=../../backends/config/dev/dev.backend.config
+```
+
+Then, when you are ready to start building your infrastructure you can simply run `terraform apply -var-file=../../environments/dev/dev.tfvars`.

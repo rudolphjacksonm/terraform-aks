@@ -32,7 +32,3 @@ resource "azurerm_cosmosdb_account" "cosmosdb" {
     failover_priority = 1
   }
 }
-
-output "cosmosdb_password" {
-  value               = "${azurerm_cosmosdb_account.cosmosdb.primary_master_key}"
-}

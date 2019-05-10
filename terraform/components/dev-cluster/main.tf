@@ -32,6 +32,13 @@ module "dev_mysql_server" {
   aks_cluster_name        = "${module.dev_aks_cluster.aks_cluster_name}"
 }
 
+module "k8s_config" {
+  source                  = "../../modules/k8s_config"
+  mysql_fqdn              = "${module.dev_mysql_server.mysql_fqdn}"
+  #env                     = "${var.env}"
+  #project                 = "${var.project}"
+}
+
 output "dev_mysql_server_password" {
   value = "${module.dev_mysql_server.mysql_password}"
 }
