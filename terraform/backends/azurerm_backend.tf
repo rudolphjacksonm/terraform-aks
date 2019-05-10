@@ -15,3 +15,10 @@ resource "azurerm_storage_account" "main" {
     environment = "${var.env}"
   }
 }
+
+resource "azurerm_storage_container" "tfstates" {
+  name                  = "tfstates"
+  resource_group_name   = "${azurerm_resource_group.tfstates.name}"
+  storage_account_name  = "${azurerm_storage_account.main.name}"
+  container_access_type = "blob"
+}
