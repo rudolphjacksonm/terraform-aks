@@ -12,3 +12,11 @@ output "cosmosdb_password" {
   value     = "${module.dev_cosmosdb.cosmosdb_password}"
   sensitive = true
 }
+
+output "cosmosdb_user" {
+  value     = "${module.dev_cosmosdb.cosmosdb_user}"
+}
+
+output "cosmosdb_hostname" {
+  value     = "${module.dev_cosmosdb.cosmosdb_hostname}"
+}

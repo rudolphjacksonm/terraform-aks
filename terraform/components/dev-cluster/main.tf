@@ -34,7 +34,7 @@ module "dev_mysql_server" {
 
 module "k8s_config" {
   source                  = "../../modules/k8s_config"
-  mysql_fqdn              = "${module.dev_mysql_server.mysql_fqdn}"
+  mysql_dsn              = "${module.dev_mysql_server.mysql_fqdn}"
   #env                     = "${var.env}"
   #project                 = "${var.project}"
 }

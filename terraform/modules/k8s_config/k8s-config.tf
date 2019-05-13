@@ -1,10 +1,10 @@
 resource "kubernetes_secret" "mysql" {
   metadata {
-    name = "mysqlfqdn"
+    name = "mysqldsn"
   }
 
   data {
-    "mysql_fqdn" = "${var.mysql_fqdn}"
+    "DSN" = "${var.mysql_dsn}"
   }
 
   type = "kubernetes.io/opaque"

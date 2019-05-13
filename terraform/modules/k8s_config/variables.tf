@@ -1,3 +1,3 @@
 #variable env {}
 #variable project {}
-variable mysql_fqdn {}
+variable mysql_dsn {}
