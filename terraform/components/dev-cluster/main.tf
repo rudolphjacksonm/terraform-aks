@@ -38,11 +38,3 @@ module "k8s_config" {
   #env                     = "${var.env}"
   #project                 = "${var.project}"
 }
-
-output "dev_mysql_server_password" {
-  value = "${module.dev_mysql_server.mysql_password}"
-}
-
-output "dev_cosmosdb_password" {
-  value = "${module.dev_cosmosdb.cosmosdb_password}"
-}
