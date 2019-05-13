@@ -3,22 +3,30 @@ Use this directory to do the following:
 1. Create resource groups and storage accounts for use by components later on using Terraform
 2. Store backend configs to be used when running `terraform init` for base components, application components, etc etc: 
 ```
-terraform init \
--backend-config=../../backends/config/${ENV}/${ENV}.backend.config
+terraform init -backend-config=../../backends/config/${ENV}/${ENV}.backend.config
 ```
 
 ## Creating new backends
 To enable us to move quickly, do the following:
 1. Create a new backend configuration in the `backends/config/dev` folder. This should only contain the following:
 ```
-storage_account_name      = "myazurestorageaccount"
+storage_account_name      = "sockshoptfstates"
 container_name            = "tfstates"
-key                       = "terraform.tfstate"
-access_key                = ""
+key                       = "jmterraform.tfstate"
+resource_group_name       = "sockshop-tfstates"
 ```
-2. Create a `tfvars` file for the environment you want to deploy. This will contain all sorts of useful bits that are important for customizing your environment, like your resource group name, the name of your project, the environment (e.g. dev, stg, prod), and the location in Azure where you wish to deploy. *Note*: the resource group, storage account name, 
-3. Run `terraform init -var-file=../environments/dev/dev.tfvars`. This will verify your backend configuration install the AzureRM provider if it has not been installed yet.
-4. Run `terraform apply -var-file=../environments/dev/dev.tfvars` to create the backend, which will consist of:
+2. Create a `.tfvars` file for the environment you want to deploy and store it in the `environments` folder, e.g. `environments/dev/dev.tfvars`. When you create the backend, the values in the backend configuration are combined with the variables in your `.tfvars` file, so things like the project name, location, and environment will populate the resource group and storage account names for you. This means you can reuse the backend config along with different tfvar files to create as many backends as you like in the same account--the only caveat being that you must delete the .tfstate file locally before supplying a new `.tfvar` file.
+  ```
+  location                = "UK South"
+  resource_group_name     = "sockshop-dev-rg"
+  environment             = "dev"
+  prefix                  = "jm"
+  node_count              = "2"
+  project                 = "sockshop"
+  env                     = "dev"
+  ```
+3. Run `terraform init -var-file=config/dev/backend_dev_base.tfvars.example -var-file=../environments/dev/dev.tfvars`. This will verify your backend configuration and install the AzureRM provider if it has not been installed yet.
+4. Run `terraform apply -var-file=config/dev/backend_dev_base.tfvars.example -var-file=../environments/dev/dev.tfvars` to create the backend, which will consist of:
 - An Azure Resource Group
 - An Azure Storage Account
 

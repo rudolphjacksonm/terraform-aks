@@ -1,0 +1,4 @@
+storage_account_name      = "sockshoptfstates"
+container_name            = "tfstates"
+key                       = "jmterraform.tfstate"
+resource_group_name       = "sockshop-tfstates"

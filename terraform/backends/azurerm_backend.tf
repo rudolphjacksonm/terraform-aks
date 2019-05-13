@@ -1,11 +1,11 @@
 
 resource "azurerm_resource_group" "tfstates" {
-  name                     = "${var.resource_group_name}-${var.env}"
+  name                     = "${var.project}-${var.env}-tfstates"
   location                 = "${var.location}"
 }
 
 resource "azurerm_storage_account" "main" {
-  name                     = "${var.project}${var.env}"
+  name                     = "${var.project}${var.env}tfstates"
   resource_group_name      = "${azurerm_resource_group.tfstates.name}"
   location                 = "${var.location}"
   account_tier             = "Standard"
