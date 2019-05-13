@@ -34,7 +34,6 @@ Updating this repository should be as painless as possible. Currently I can't fi
 
 
 ##### Notes
-* Going to try using the helm secrets plugin to encrypt secrets files.
 * I've moved helm charts that I'm no longer using or am in the process of replacing to the `backup` folder.
 * You can pass values to dependent charts mentioned in your `requirements.yaml` using this format:
 ```
