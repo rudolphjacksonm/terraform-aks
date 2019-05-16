@@ -6,6 +6,19 @@ Use this directory to do the following:
 terraform init -backend-config=../../backends/config/${ENV}/${ENV}.backend.config
 ```
 
+## Prereqs
+You'll need:
+- An Azure AD Application + Service Principal
+- The credentials for your Service Principal
+
+Set the credentials as environment variables before proceeding with the steps outlined below:
+```
+export ARM_CLIENT_ID=00000-000000-000000-00000
+export ARM_CLIENT_SECRET=<sensitive>
+export ARM_TENANT_ID=00000-000000-000000-00000
+export ARM_SUBSCRIPTION_ID=00000-000000-000000-00000
+```
+
 ## Creating new backends
 To enable us to move quickly, do the following:
 1. Create a new backend configuration in the `backends/config/dev` folder. This should only contain the following:
@@ -31,10 +44,7 @@ resource_group_name       = "sockshop-tfstates"
 - An Azure Storage Account
 
 You now have a valid backend configuration using an Azure Storage Account. This can be used when applying any of the components by running the following: 
-
-Using Azure CLI and access key for the storage account:
 ```
-export ARM_ACCESS_KEY=<sensitive>
 terraform init -backend-config=../../backends/config/dev/dev.backend.config
 ```
 
